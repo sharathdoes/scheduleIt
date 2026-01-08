@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Event {
+  id            String  @id @default(uuid())
+  slug          String  @unique
+  name          String
+  description   String?
+  organizerName String
+  passwordHash  String
+
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  participants       Participant[]
+  adjustmentRequests AdjustmentRequest[]
+}
+
+model Participant {
+  id                  String              @id @default(uuid())
+  name                String
+  passwordHash        String
+  eventId             String
+  event               Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  note                String
+  availabilities      Availability[]
+  adjustmentTarget    AdjustmentTarget[]
+  adjustmentRequests  AdjustmentRequest[] @relation("AdjustmentRequester")
+  createdAt           DateTime            @default(now())
+
+  @@unique([eventId, name])
+}
+
+model Availability {
+  id            String                 @id @default(uuid())
+  participantId String
+  confidence    AvailabilityConfidence @default(DEFINITE)
+  startTime     DateTime
+  endTime       DateTime
+  participant   Participant            @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  createdAt     DateTime               @default(now())
+}
+
+enum AvailabilityConfidence {
+  DEFINITE
+  FLEXIBLE
+  MAYBE
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  message   String
+  email     String?
+  createdAt DateTime @default(now())
+}
+
+model AdjustmentRequest {
+  id          String    @id @default(uuid())
+  eventId     String
+  requesterId String // who is asking
+  startTime   DateTime
+  endTime     DateTime
+  note        String?
+  createdAt   DateTime  @default(now())
+  resolvedAt  DateTime?
+
+  event     Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  requester   Participant @relation("AdjustmentRequester", fields: [requesterId], references: [id])
+
+  targets AdjustmentTarget[]
+}
+
+model AdjustmentTarget {
+  id String @id @default(cuid())
+
+  adjustmentRequestId String
+  participantId       String
+
+  response    AdjustmentResponse @default(PENDING)
+  respondedAt DateTime?
+
+  adjustmentRequest AdjustmentRequest @relation(fields: [adjustmentRequestId], references: [id], onDelete: Cascade)
+  participant       Participant       @relation(fields: [participantId], references: [id])
+
+  @@unique([adjustmentRequestId, participantId])
+}
+
+enum AdjustmentResponse {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
