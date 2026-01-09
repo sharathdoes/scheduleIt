@@ -1,5 +1,5 @@
 import { Event } from "@/lib/type";
-import { getSlugEvent } from "@/actions/event";
+import { getEvent } from "@/actions/event";
 
 type Props = { 
   params: Promise<{ id: string }> 
@@ -11,7 +11,7 @@ export default async function EventPage({ params }: Props) {
   if (!id) return <div>Invalid event</div>;
 
   try {
-    const event: Event | undefined | null = await getSlugEvent({eventSlug:id})
+    const event: Event | undefined | null = await getEvent({eventSlug:id})
 
     if (!event) return <div>Event not found</div>;
 
