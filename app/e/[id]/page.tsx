@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
 import { Event } from "@/lib/type";
+import { getSlugEvent } from "@/actions/event";
 
 type Props = { 
   params: Promise<{ id: string }> 
@@ -11,9 +11,7 @@ export default async function EventPage({ params }: Props) {
   if (!id) return <div>Invalid event</div>;
 
   try {
-    const event: Event | null = await prisma.event.findUnique({
-      where: { slug: id },
-    });
+    const event: Event | undefined | null = await getSlugEvent({eventSlug:id})
 
     if (!event) return <div>Event not found</div>;
 
