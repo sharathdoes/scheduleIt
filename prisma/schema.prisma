@@ -20,14 +20,27 @@ model Event {
   description   String?
   organizerName String
   passwordHash  String
-
+  periodName    String?  // "Winter", "Summer Break", etc.
   startDate DateTime
   endDate   DateTime
   createdAt DateTime  @default(now())
   expiresAt DateTime?
-
+  subEvents          SubEvent[]
   participants       Participant[]
   adjustmentRequests AdjustmentRequest[]
+}
+
+model SubEvent {
+  id String @id @default(uuid())
+  eventId     String
+  name        String   
+  duration    Int      
+  order       Int      @default(0) 
+  
+  event               Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  availabilities      Availability[]
+  
+  @@unique([eventId, order])
 }
 
 model Participant {
@@ -36,7 +49,7 @@ model Participant {
   passwordHash        String
   eventId             String
   event               Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  note                String
+  note                String?
   availabilities      Availability[]
   adjustmentTarget    AdjustmentTarget[]
   adjustmentRequests  AdjustmentRequest[] @relation("AdjustmentRequester")
@@ -48,9 +61,11 @@ model Participant {
 model Availability {
   id            String                 @id @default(uuid())
   participantId String
+  subEventId    String                
   confidence    AvailabilityConfidence @default(DEFINITE)
   startTime     DateTime
   endTime       DateTime
+  subEvent      SubEvent               @relation(fields: [subEventId], references: [id], onDelete: Cascade)
   participant   Participant            @relation(fields: [participantId], references: [id], onDelete: Cascade)
   createdAt     DateTime               @default(now())
 }

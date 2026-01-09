@@ -8,16 +8,18 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
  const posts=await Promise.all(
   [
-    // await prisma.event.create({
-    //     data:{
-    //         slug:"924",
-    //         name:"Kuari Pass Trek",
-    //         organizerName:"Sharath",
-    //         passwordHash:"kuaripass",
-    //          startDate: new Date("2026-02-10T09:00:00.000Z"),
-    //         endDate: new Date("2026-02-15T17:00:00.000Z"),
-    //     }
-    // }),
+    await prisma.event.create({
+        data:{
+            slug:"924",
+            name:"Kuari Pass Trek",
+            description:"we're gonna reach summit",
+            organizerName:"Sharath",
+            passwordHash:"kuaripass",
+            periodName:"Winter",
+            startDate: new Date("2026-02-10T09:00:00.000Z"),
+            endDate: new Date("2026-02-15T17:00:00.000Z"),
+        }
+    }),
         // await prisma.participant.create({
         //     data:{
         //         eventId:"f559f3d6-c6c9-479d-bbc6-d61b010be227",

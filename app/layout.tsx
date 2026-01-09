@@ -1,6 +1,5 @@
 // app/layout.tsx
 import "./globals.css";
-import { Header } from "@/components/header";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider"
 import localFont from "next/font/local";
@@ -31,7 +30,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <>   <Header/>
+            <>   
             {children}</>
           
           </ThemeProvider>
