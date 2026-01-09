@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export default function Home() {
   return (
-    <div className=" w-full max-w-4xl h-[75%] flex flex-col gap-3  ">
+    <div className=" w-full max-w-3xl h-[65%] flex flex-col gap-3  ">
       <div className=" h-[10%] w-full flex items-center justify-center ">
         <Input placeholder="Enter event title.." />
       </div>
@@ -39,11 +39,11 @@ export default function Home() {
 
           <Calendar05 />
         </div>
-        <div className="p-3 flex flex-col gap-4  justify-start h-full w-full">
+        <div className="flex flex-col gap-4  justify-start h-full w-full">
           <div className="flex flex-col gap-1">
             <Textarea
               placeholder="Describe your event..."
-              className="resize-none"
+              className="mt-4 h-28"
             />
           </div>
 
@@ -60,12 +60,11 @@ export default function Home() {
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">Event Slug (optional)</label>
             <p className="text-sm text-muted-foreground">
-              A slug is a short, unique text used in the event link.
+              A slug is a unique text used in link.
             </p>
             <Input placeholder="Your custom slug" />
           </div>
 
-          <Button>Create Event</Button>
         </div>
       </div>
     </div>
