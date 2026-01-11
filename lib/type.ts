@@ -19,28 +19,16 @@ export interface Event {
   description?: string | null;
   organizerName: string;
   passwordHash: string;
-  periodName?: string | null;
+  duration: number; // Number of days for the event
   startDate: Date;
-  endDate: Date;
+    periodName :string | null; // Season/period start
+  endDate: Date; // Season/period end
   createdAt: Date;
   expiresAt?: Date | null;
   
   // Relations (optional when querying)
-  subEvents?: SubEvent[];
   participants?: Participant[];
   adjustmentRequests?: AdjustmentRequest[];
-}
-
-export interface SubEvent {
-  id: string;
-  eventId: string;
-  name: string;
-  duration: number;
-  order: number;
-  
-  // Relations (optional when querying)
-  event?: Event;
-  availabilities?: Availability[];
 }
 
 export interface Participant {
@@ -48,7 +36,7 @@ export interface Participant {
   name: string;
   passwordHash: string;
   eventId: string;
-  note?: string | null; // Made optional to match schema
+  note?: string | null;
   createdAt: Date;
 
   // Relations (optional when querying)
@@ -61,7 +49,6 @@ export interface Participant {
 export interface Availability {
   id: string;
   participantId: string;
-  subEventId: string; // Added - was missing!
   confidence: AvailabilityConfidence;
   startTime: Date;
   endTime: Date;
@@ -69,7 +56,6 @@ export interface Availability {
   
   // Relations (optional when querying)
   participant?: Participant;
-  subEvent?: SubEvent;
 }
 
 export interface Feedback {

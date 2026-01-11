@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider"
 import localFont from "next/font/local";
+import { Header } from "@/components/header";
 
 export const metadata: Metadata = {
   title: "Schedule",
@@ -31,6 +32,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <>   
+            {/* <Header/> */}
             {children}</>
           
           </ThemeProvider>

@@ -14,33 +14,21 @@ datasource db {
 }
 
 model Event {
-  id            String  @id @default(uuid())
-  slug          String  @unique
+  id            String   @id @default(uuid())
+  slug          String   @unique
   name          String
   description   String?
   organizerName String
   passwordHash  String
-  periodName    String?  // "Winter", "Summer Break", etc.
-  startDate DateTime
-  endDate   DateTime
+  duration      Int      // Number of days for the event
+  periodName String?
+  startDate DateTime   // Period start (e.g., Winter starts Jan 1)
+  endDate   DateTime   // Period end (e.g., Winter ends March 31)
   createdAt DateTime  @default(now())
   expiresAt DateTime?
-  subEvents          SubEvent[]
+
   participants       Participant[]
   adjustmentRequests AdjustmentRequest[]
-}
-
-model SubEvent {
-  id String @id @default(uuid())
-  eventId     String
-  name        String   
-  duration    Int      
-  order       Int      @default(0) 
-  
-  event               Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  availabilities      Availability[]
-  
-  @@unique([eventId, order])
 }
 
 model Participant {
@@ -61,11 +49,9 @@ model Participant {
 model Availability {
   id            String                 @id @default(uuid())
   participantId String
-  subEventId    String                
   confidence    AvailabilityConfidence @default(DEFINITE)
   startTime     DateTime
   endTime       DateTime
-  subEvent      SubEvent               @relation(fields: [subEventId], references: [id], onDelete: Cascade)
   participant   Participant            @relation(fields: [participantId], references: [id], onDelete: Cascade)
   createdAt     DateTime               @default(now())
 }
@@ -86,7 +72,7 @@ model Feedback {
 model AdjustmentRequest {
   id          String    @id @default(uuid())
   eventId     String
-  requesterId String // who is asking
+  requesterId String
   startTime   DateTime
   endTime     DateTime
   note        String?
@@ -94,7 +80,7 @@ model AdjustmentRequest {
   resolvedAt  DateTime?
 
   event     Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  requester   Participant @relation("AdjustmentRequester", fields: [requesterId], references: [id])
+  requester Participant @relation("AdjustmentRequester", fields: [requesterId], references: [id])
 
   targets AdjustmentTarget[]
 }
