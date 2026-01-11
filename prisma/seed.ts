@@ -7,19 +7,19 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
- const posts=await Promise.all(
-  [
-    await createEvent({
-            slug:"9204",
-            name:"Kuar00i Pass Trek",
-            description:"we'0re gonna reach summit",
-            organizerName:"Shar0ath",
-            passwordHash:"kuari0pass",
-            periodName:"Win0ter",
-            startDate: new Date("2026-02-12T09:00:00.000Z"),
-            endDate: new Date("2026-02-15T17:00:00.000Z"),
-        }
-    ),
+//  const posts=await Promise.all(
+//   [
+//     await createEvent({
+//             slug:"9204",
+//             name:"Kuar00i Pass Trek",
+//             description:"we'0re gonna reach summit",
+//             organizerName:"Shar0ath",
+//             passwordHash:"kuari0pass",
+//             periodName:"Win0ter",
+//             startDate: new Date("2026-02-12T09:00:00.000Z"),
+//             endDate: new Date("2026-02-15T17:00:00.000Z"),
+//         }
+//     ),
         // await prisma.participant.create({
         //     data:{
         //         eventId:"f559f3d6-c6c9-479d-bbc6-d61b010be227",
@@ -35,9 +35,9 @@ async function main() {
         //         startTime: new Date("2026-02-10T02:00:00.000Z"),
         //         endTime: new Date("2026-02-10T06:00:00.000Z"),            }
         //     })
-  ]
- )
-  console.log('Seeding completed.', posts);
+ // ]
+ //)
+  //console.log('Seeding completed.', posts);
 }
 
 main()
